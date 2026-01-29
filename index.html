@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANISHA - AI Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/tween.min.js"></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Initializing ANISHA...</div>
+            <div class="loading-subtext">Please allow camera and microphone access when prompted</div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div id="main-container" class="hidden">
+        <!-- 3D Canvas -->
+        <div id="canvas-container">
+            <canvas id="anisha-canvas"></canvas>
+        </div>
+
+        <!-- Controls Panel -->
+        <div id="controls-panel">
+            <div class="control-group">
+                <button id="mic-toggle" class="control-btn active" title="Microphone">
+                    <span class="icon">🎤</span>
+                </button>
+                <button id="camera-toggle" class="control-btn" title="Camera">
+                    <span class="icon">📷</span>
+                </button>
+                <button id="memory-toggle" class="control-btn" title="Memory">
+                    <span class="icon">💾</span>
+                </button>
+                <button id="reset-btn" class="control-btn" title="Reset">
+                    <span class="icon">🔄</span>
+                </button>
+            </div>
+            
+            <div class="status-display">
+                <div class="status-item">
+                    <span class="status-label">Status:</span>
+                    <span id="status-text" class="status-value">Ready</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Language:</span>
+                    <span id="language-text" class="status-value">Detecting...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Memory:</span>
+                    <span id="memory-status" class="status-value">Active</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Interface -->
+        <div id="chat-container">
+            <div id="chat-messages"></div>
+            <div id="input-area">
+                <div id="voice-indicator">
+                    <div class="pulse-ring"></div>
+                    <div class="pulse-ring delay-1"></div>
+                    <div class="pulse-ring delay-2"></div>
+                    <div class="voice-circle">
+                        <span class="voice-icon">🎤</span>
+                    </div>
+                </div>
+                <input type="text" id="text-input" placeholder="Type your message or speak naturally...">
+                <button id="send-btn">Send</button>
+            </div>
+        </div>
+
+        <!-- Privacy Modal -->
+        <div id="privacy-modal" class="modal">
+            <div class="modal-content">
+                <h2>Privacy & Permissions</h2>
+                <p>ANISHA respects your privacy:</p>
+                <ul>
+                    <li>Camera is used only for face presence detection</li>
+                    <li>No facial recognition or biometric data stored</li>
+                    <li>Conversations are processed in real-time</li>
+                    <li>Memory storage requires your consent</li>
+                    <li>All data is encrypted and secure</li>
+                </ul>
+                <div class="modal-buttons">
+                    <button id="accept-privacy" class="primary-btn">Accept & Continue</button>
+                    <button id="decline-privacy" class="secondary-btn">Use Without Camera</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memory Consent Modal -->
+        <div id="memory-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>Conversation Memory</h2>
+                <p>ANISHA can remember conversations to provide better assistance:</p>
+                <div class="memory-options">
+                    <label>
+                        <input type="radio" name="memory-option" value="session" checked>
+                        <span>Remember during this session only</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="memory-option" value="consent">
+                        <span>Ask before remembering personal details</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="memory-option" value="none">
+                        <span>Don't remember anything</span>
+                    </label>
+                </div>
+                <div class="modal-buttons">
+                    <button id="save-memory-pref" class="primary-btn">Save Preference</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="vision.js"></script>
+    <script src="voice.js"></script>
+    <script src="ai.js"></script>
+    <script src="script.js"></script>
+</body>
+  </html>
